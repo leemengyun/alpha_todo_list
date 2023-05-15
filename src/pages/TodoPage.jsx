@@ -131,19 +131,12 @@ const TodoPage = () => {
     setListLength((prevLength) => {
       return prevLength - 1;
     });
-    // let listLength = todos.length;
   };
-
-  // const Amount = (todo) => {
-  //   return todo.length;
-  // };
-
-  // console.log(Amount);
 
   return (
     <div>
       TodoPage
-      <Header username="Eva" />
+      <Header username='Eva' />
       <TodoInput
         inputValue={inputValue}
         onChangeValue={handleChangeValue}
