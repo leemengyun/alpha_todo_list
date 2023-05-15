@@ -6,7 +6,7 @@
 ## Installation
 
 ```
-git clone https://github.com/ollyhite/weather_forecast.git
+git clone https://github.com/leemengyun/alpha_todo_list.git
 ```
 
 ## Built With
