@@ -15,7 +15,7 @@ git clone https://github.com/ollyhite/weather_forecast.git
 - React
 
 ## Usage
-![alt text](./assets/images/readme_screenshot.png)
+![alt text](./src/assets/images/readme_screenshot.png)
 
 
 
