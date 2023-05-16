@@ -111,7 +111,7 @@ const TodoItem = ({ todo, onToggleDone, onChangeMode, onDelete, onSave }) => {
   const inputRef = useRef(null);
 
   const handleKeyDown = (e) => {
-    console.log(`press key:${e.key}`);
+    // console.log(`press key:${e.key}`);
 
     if (inputRef.current.value.length > 0 && e.key === 'Enter') {
       onSave?.({ id: todo.id, title: inputRef.current.value });
@@ -127,31 +127,31 @@ const TodoItem = ({ todo, onToggleDone, onChangeMode, onDelete, onSave }) => {
     <StyledTaskItem
       className={clsx('', { done: todo.isDone, edit: todo.isEdit })}
     >
-      <div className="task-item-checked">
+      <div className='task-item-checked'>
         <span
-          className="icon icon-checked"
+          className='icon icon-checked'
           onClick={() => {
             onToggleDone?.(todo.id);
           }}
         />
       </div>
       <div
-        className="task-item-body"
+        className='task-item-body'
         onDoubleClick={() => {
           onChangeMode?.({ id: todo.id, isEdit: true });
         }}
       >
-        <span className="task-item-body-text">{todo.title}</span>
+        <span className='task-item-body-text'>{todo.title}</span>
         <input
           ref={inputRef}
-          className="task-item-body-input"
+          className='task-item-body-input'
           onKeyDown={handleKeyDown}
           defaultValue={todo.title}
         />
       </div>
-      <div className="task-item-action ">
+      <div className='task-item-action '>
         <button
-          className="btn-reset btn-destroy icon"
+          className='btn-reset btn-destroy icon'
           onClick={() => {
             // 為什麼上面這個不行
             // onDelete?.({ id: todo.id });

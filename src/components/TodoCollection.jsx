@@ -8,7 +8,7 @@ const TodoCollection = ({
   onDelete,
   onSave,
 }) => {
-  console.log(todos);
+  // console.log(todos);
 
   return (
     <div>
