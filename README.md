@@ -18,3 +18,11 @@ git clone https://github.com/leemengyun/alpha_todo_list.git
 ## Usage
 
 ![alt text](./src/assets/images/readme_screenshot.png)
+
+- npm i
+- npm start
+- then you can see the demo page via page link :
+
+```
+http://localhost:3000/todo
+```
