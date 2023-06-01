@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 //頁面切換是 react-router-dom 提供的 Link 功能
 import { Link } from 'react-router-dom';
 import { login } from 'api/auth';
 //要在 React component 裡轉址，可以使用 react-router-dom 提供的 React Hook
 import { useNavigate } from 'react-router-dom';
+import { checkPermission } from 'api/auth';
 
 import {
   AuthContainer,
@@ -55,6 +57,22 @@ const LoginPage = () => {
       position: 'center',
     });
   };
+
+  //檢查token
+  useEffect(() => {
+    const checkTokenIsvalid = async () => {
+      const authToken = localStorage.getItem('authToken');
+
+      if (!authToken) {
+        return;
+      }
+      const result = await checkPermission(authToken);
+      if (result) {
+        navigate('/todos');
+      }
+    };
+    checkTokenIsvalid();
+  }, [navigate]);
 
   return (
     <AuthContainer>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Footer, Header, TodoCollection, TodoInput } from 'components';
 // import api component
 import { getTodos, createTodo, patchTodo, deleteTodo } from '../api/todos';
+import { checkPermission } from 'api/auth';
+import { useNavigate } from 'react-router-dom';
 
 // const dummyTodos = [
 //   {
@@ -30,6 +32,7 @@ const TodoPage = () => {
   const [inputValue, setInputValue] = useState('');
   const [todo, setTodo] = useState([]);
   const [listLength, setListLength] = useState(todo.length);
+  const navigate = useNavigate();
 
   // Pages handle event---------------
   const handleChangeValue = (value) => {
@@ -199,6 +202,22 @@ const TodoPage = () => {
     };
     getTodosAsync();
   }, []);
+
+  //檢查token
+  useEffect(() => {
+    const checkTokenIsvalid = async () => {
+      const authToken = localStorage.getItem('authToken');
+
+      if (!authToken) {
+        navigate('/login');
+      }
+      const result = await checkPermission(authToken);
+      if (!result) {
+        navigate('/login');
+      }
+    };
+    checkTokenIsvalid();
+  }, [navigate]);
 
   return (
     <div>
