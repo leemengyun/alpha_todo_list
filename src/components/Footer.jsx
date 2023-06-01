@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'contexts/AuthContext';
 
 const StyledFooter = styled.footer`
   display: flex;
@@ -35,12 +36,14 @@ const StyledButton = styled.button`
 `;
 
 const Footer = ({ listLength }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleClick = () => {
-    navigate('/login');
-    localStorage.removeItem('authToken');
-    return;
+    // navigate('/login');
+    // localStorage.removeItem('authToken');
+    // return;
+    logout();
   };
 
   return (

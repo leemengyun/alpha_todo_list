@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 //頁面切換是 react-router-dom 提供的 Link 功能
 import { Link } from 'react-router-dom';
-import { checkPermission, register } from 'api/auth';
+// import { checkPermission, register } from 'api/auth';
 //要在 React component 裡轉址，可以使用 react-router-dom 提供的 React Hook
 import { useNavigate } from 'react-router-dom';
 
@@ -16,12 +16,15 @@ import { ACLogoIcon } from 'assets/images';
 import { AuthInput } from 'components';
 //modal dialog套件
 import Swal from 'sweetalert2';
+import { useAuth } from 'contexts/AuthContext';
 
 const SignUpPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setemail] = useState('');
   const navigate = useNavigate();
+  //拿到login方法、isAuthenticated
+  const { register, isAuthenticated } = useAuth();
 
   const handleClick = async () => {
     if (username.length === 0) {
@@ -33,7 +36,16 @@ const SignUpPage = () => {
     if (email.length === 0) {
       return;
     }
-    const { success, authToken } = await register({
+
+    // -- 原本API寫法
+    // const { success, authToken } = await register({
+    //   username,
+    //   password,
+    //   email,
+    // });
+
+    // -- 掛載useAuth context 寫法
+    const success = await register({
       username,
       password,
       email,
@@ -41,7 +53,7 @@ const SignUpPage = () => {
 
     //註冊成功
     if (success) {
-      localStorage.setItem('authToken', authToken);
+      // localStorage.setItem('authToken', authToken);
       Swal.fire({
         title: '註冊成功',
         text: `歡迎${username}加入`,
@@ -50,7 +62,7 @@ const SignUpPage = () => {
         timer: 1500,
         position: 'center',
       });
-      navigate('/todos');
+      // navigate('/todos');
       return;
     }
 
@@ -67,19 +79,24 @@ const SignUpPage = () => {
 
   //檢查token
   useEffect(() => {
-    const checkTokenIsvalid = async () => {
-      const authToken = localStorage.getItem('authToken');
+    // -- 原本API寫法
+    // const checkTokenIsValid = async () => {
+    //   const authToken = localStorage.getItem('authToken');
+    //   if (!authToken) {
+    //     return;
+    //   }
+    //   const result = await checkPermission(authToken);
+    //   if (result) {
+    //     navigate('/todos');
+    //   }
+    // };
+    // checkTokenIsValid();
 
-      if (!authToken) {
-        return;
-      }
-      const result = await checkPermission(authToken);
-      if (result) {
-        navigate('/todos');
-      }
-    };
-    checkTokenIsvalid();
-  }, [navigate]);
+    // -- 掛載useAuth context 寫法
+    if (isAuthenticated) {
+      navigate('/todos');
+    }
+  }, [navigate, isAuthenticated]);
 
   return (
     <AuthContainer>

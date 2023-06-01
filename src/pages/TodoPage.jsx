@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Footer, Header, TodoCollection, TodoInput } from 'components';
 // import api component
 import { getTodos, createTodo, patchTodo, deleteTodo } from '../api/todos';
-import { checkPermission } from 'api/auth';
+// import { checkPermission } from 'api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'contexts/AuthContext'; // 引用封裝好的資訊
 
 // const dummyTodos = [
 //   {
@@ -33,6 +34,7 @@ const TodoPage = () => {
   const [todo, setTodo] = useState([]);
   const [listLength, setListLength] = useState(todo.length);
   const navigate = useNavigate();
+  const { isAuthenticated, currentMember } = useAuth(); // 取出需要的狀態與方法
 
   // Pages handle event---------------
   const handleChangeValue = (value) => {
@@ -205,24 +207,30 @@ const TodoPage = () => {
 
   //檢查token
   useEffect(() => {
-    const checkTokenIsvalid = async () => {
-      const authToken = localStorage.getItem('authToken');
+    // -- 原本API寫法
+    // const checkTokenIsValid = async () => {
+    //   const authToken = localStorage.getItem('authToken');
 
-      if (!authToken) {
-        navigate('/login');
-      }
-      const result = await checkPermission(authToken);
-      if (!result) {
-        navigate('/login');
-      }
-    };
-    checkTokenIsvalid();
-  }, [navigate]);
+    //   if (!authToken) {
+    //     navigate('/login');
+    //   }
+    //   const result = await checkPermission(authToken);
+    //   if (!result) {
+    //     navigate('/login');
+    //   }
+    // };
+    // checkTokenIsValid();
+
+    // -- 掛載useAuth context 寫法
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [navigate, isAuthenticated]);
 
   return (
     <div>
       TodoPage
-      <Header username='Eva' />
+      <Header username={currentMember?.name} />
       <TodoInput
         inputValue={inputValue}
         onChangeValue={handleChangeValue}

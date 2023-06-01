@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 //頁面切換是 react-router-dom 提供的 Link 功能
-import { Link } from 'react-router-dom';
-import { login } from 'api/auth';
+import { Link, useNavigate } from 'react-router-dom';
+// import { login } from 'api/auth';
+// import { checkPermission } from 'api/auth';
 //要在 React component 裡轉址，可以使用 react-router-dom 提供的 React Hook
-import { useNavigate } from 'react-router-dom';
-import { checkPermission } from 'api/auth';
+import { useAuth } from 'contexts/AuthContext';
 
 import {
   AuthContainer,
@@ -24,6 +24,9 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  // 取出需要的狀態與方法
+  const { login, isAuthenticated } = useAuth();
+
   const handleClick = async () => {
     if (username.length === 0) {
       return;
@@ -31,11 +34,15 @@ const LoginPage = () => {
     if (password.length === 0) {
       return;
     }
-    const { success, authToken } = await login({ username, password });
+    // -- 原本API寫法
+    //  const { success, authToken } = await login({ username, password });
+
+    // -- 掛載useAuth context 寫法
+    const success = await login({ username, password });
 
     //登入成功
     if (success) {
-      localStorage.setItem('authToken', authToken);
+      // localStorage.setItem('authToken', authToken);
       Swal.fire({
         title: '登入成功',
         text: `歡迎${username}回來`,
@@ -44,7 +51,6 @@ const LoginPage = () => {
         timer: 1500,
         position: 'center',
       });
-      navigate('/todos');
       return;
     }
     //登入失敗
@@ -60,19 +66,24 @@ const LoginPage = () => {
 
   //檢查token
   useEffect(() => {
-    const checkTokenIsvalid = async () => {
-      const authToken = localStorage.getItem('authToken');
+    // -- 原本API寫法
+    // const checkTokenIsValid = async () => {
+    //   const authToken = localStorage.getItem('authToken');
+    //   if (!authToken) {
+    //     return;
+    //   }
+    //   const result = await checkPermission(authToken);
+    //   if (result) {
+    //     navigate('/todos');
+    //   }
+    // };
+    // checkTokenIsValid();
 
-      if (!authToken) {
-        return;
-      }
-      const result = await checkPermission(authToken);
-      if (result) {
-        navigate('/todos');
-      }
-    };
-    checkTokenIsvalid();
-  }, [navigate]);
+    // -- 掛載useAuth context 寫法
+    if (isAuthenticated) {
+      navigate('/todos');
+    }
+  }, [navigate, isAuthenticated]);
 
   return (
     <AuthContainer>

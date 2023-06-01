@@ -18,9 +18,9 @@ export const getTodos = async () => {
 };
 
 //create new todo data
-export const createTodo = async (playload) => {
+export const createTodo = async (payload) => {
   try {
-    const { title, isDone } = playload;
+    const { title, isDone } = payload;
     const res = await axios.post(`${baseUrl}/todos`, {
       title,
       isDone,
@@ -30,9 +30,9 @@ export const createTodo = async (playload) => {
     console.error('[CREATE todos failed:]:', error);
   }
 };
-export const patchTodo = async (playload) => {
+export const patchTodo = async (payload) => {
   try {
-    const { id, title, isDone } = playload;
+    const { id, title, isDone } = payload;
     const res = await axios.patch(`${baseUrl}/todos/${id}`, {
       title,
       isDone,
