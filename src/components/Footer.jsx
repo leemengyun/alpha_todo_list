@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { useNavigate } from 'react-router-dom';
+
 const StyledFooter = styled.footer`
   display: flex;
   justify-content: space-between;
@@ -33,10 +35,18 @@ const StyledButton = styled.button`
 `;
 
 const Footer = ({ listLength }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/login');
+    localStorage.removeItem('authToken');
+    return;
+  };
+
   return (
     <StyledFooter>
       <p>剩餘項目數：{listLength}</p>
-      <StyledButton>登出</StyledButton>
+      <StyledButton onClick={handleClick}>登出</StyledButton>
     </StyledFooter>
   );
 };

@@ -15,13 +15,13 @@ import {
 
 function App() {
   return (
-    <div className="app">
+    <div className='app'>
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<HomePage />}></Route>
-          <Route path="login" element={<LoginPage />}></Route>
-          <Route path="signup" element={<SignUpPage />}></Route>
-          <Route path="todo" element={<TodoPage />}></Route>
+          <Route path='*' element={<HomePage />}></Route>
+          <Route path='login' element={<LoginPage />}></Route>
+          <Route path='signup' element={<SignUpPage />}></Route>
+          <Route path='todos' element={<TodoPage />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

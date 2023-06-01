@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Footer, Header, TodoCollection, TodoInput } from 'components';
 // import api component
-import { getTodos, createTodo } from '../api/todos';
+import { getTodos, createTodo, patchTodo, deleteTodo } from '../api/todos';
 
 // const dummyTodos = [
 //   {
@@ -89,24 +89,37 @@ const TodoPage = () => {
           isEdit: false,
         },
       ]);
+      setListLength((prevLength) => {
+        return prevLength + 1;
+      });
       //送出後要清空input內容
       setInputValue('');
     } catch (error) {
       console.log(`[createData failed]`);
     }
   };
-  const handleToggleDone = (id) => {
-    setTodo((prevtodos) => {
-      return prevtodos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            isDone: !todo.isDone,
-          };
-        }
-        return todo;
+  const handleToggleDone = async (id) => {
+    const currentTodo = todo.find((todo) => todo.id === id);
+
+    try {
+      await patchTodo({
+        id,
+        isDone: !currentTodo.isDone,
       });
-    });
+      setTodo((prevtodos) => {
+        return prevtodos.map((todo) => {
+          if (todo.id === id) {
+            return {
+              ...todo,
+              isDone: !todo.isDone,
+            };
+          }
+          return todo;
+        });
+      });
+    } catch (error) {
+      console.log(`[updateData failed]`);
+    }
   };
   const handleChangeMode = ({ id, isEdit }) => {
     setTodo((prevtodos) => {
@@ -126,28 +139,45 @@ const TodoPage = () => {
     });
     // console.log(todo);
   };
-  const handleOnSave = ({ id, title }) => {
-    setTodo((prevtodos) => {
-      return prevtodos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            title,
-            isEdit: false,
-          };
-        }
-        return todo;
+  const handleOnSave = async ({ id, title }) => {
+    try {
+      await patchTodo({
+        id,
+        title,
       });
-    });
+
+      setTodo((prevtodos) => {
+        return prevtodos.map((todo) => {
+          if (todo.id === id) {
+            return {
+              ...todo,
+              title,
+              isEdit: false,
+            };
+          }
+          return todo;
+        });
+      });
+    } catch (error) {
+      console.log(`[saveList failed]`);
+    }
+
     // console.log(todo);
   };
-  const handleOnDelete = (id) => {
-    setTodo((prevtodos) => {
-      return prevtodos.filter((t) => t.id !== id);
-    });
-    setListLength((prevLength) => {
-      return prevLength - 1;
-    });
+  const handleOnDelete = async (id) => {
+    // const currentTodo = todo.find((todo)=>todo.id===id)
+
+    try {
+      await deleteTodo(id);
+      setTodo((prevtodos) => {
+        return prevtodos.filter((t) => t.id !== id);
+      });
+      setListLength((prevLength) => {
+        return prevLength - 1;
+      });
+    } catch (error) {
+      console.log(`[delete List failed]`);
+    }
   };
 
   // Api event ---------------
@@ -162,6 +192,7 @@ const TodoPage = () => {
             isEdit: false,
           }))
         );
+        setListLength(todos.length);
       } catch (error) {
         console.log(`[getTodosAsync failed]`);
       }

@@ -11,16 +11,6 @@
       "id": 2
     },
     {
-      "title": "Learn to use context",
-      "isDone": true,
-      "id": 3
-    },
-    {
-      "title": "Learn to implement auth",
-      "isDone": false,
-      "id": 4
-    },
-    {
       "title": "React is hard",
       "isDone": true,
       "id": 5
@@ -31,14 +21,9 @@
       "id": 6
     },
     {
-      "title": "123123",
+      "title": "testtest",
       "isDone": false,
       "id": 7
-    },
-    {
-      "title": "123123",
-      "isDone": false,
-      "id": 8
     }
   ]
 }
