@@ -6,29 +6,30 @@ const authURL = 'https://todo-list.alphacamp.io/api/auth';
 
 export const login = async ({ username, password }) => {
   try {
-    // const { data } = await axios.post(`${authURL}/login`, {
-    //   username,
-    //   password,
-    // });
-
-    // console.log(data);
-
-    // const { authToken } = data;
-    // if (authToken) {
-    //   return { success: true, ...data };
-    // }
-    // return data;
-
-    const data = {
+    const { data } = await axios.post(`${authURL}/login`, {
       username,
-      like: 30,
-      followers: 20,
-    };
-    if (username === 'evalee8866' && password === 'evalee8866') {
+      password,
+    });
+
+    console.log(data);
+
+    const { authToken } = data;
+    if (authToken) {
       return { success: true, ...data };
-    } else {
-      return { success: false };
     }
+    return data;
+
+    // 打假的API寫法
+    //   const data = {
+    //     username,
+    //     like: 30,
+    //     followers: 20,
+    //   };
+    //   if (username === 'evalee8866' && password === 'evalee8866') {
+    //     return { success: true, ...data };
+    //   } else {
+    //     return { success: false };
+    //   }
   } catch (error) {
     console.error('["login failed"]', error);
   }
