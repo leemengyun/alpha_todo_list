@@ -14,10 +14,12 @@ import {
   Routes,
 } from 'react-router-dom';
 
+const basename = process.env.PUBLIC_URL;
+
 function App() {
   return (
     <div className='app'>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         {/* //讓 <AuthProvider> 包住所有元件，如此一來子元件就可以取用 Context 的共享內容 */}
         {/* 但需要放在 <BrowserRouter> 裡面，因為我們在 AuthProvider 裡有使用到瀏覽器的資訊 */}
         <AuthProvider>

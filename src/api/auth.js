@@ -6,18 +6,29 @@ const authURL = 'https://todo-list.alphacamp.io/api/auth';
 
 export const login = async ({ username, password }) => {
   try {
-    const { data } = await axios.post(`${authURL}/login`, {
+    // const { data } = await axios.post(`${authURL}/login`, {
+    //   username,
+    //   password,
+    // });
+
+    // console.log(data);
+
+    // const { authToken } = data;
+    // if (authToken) {
+    //   return { success: true, ...data };
+    // }
+    // return data;
+
+    const data = {
       username,
-      password,
-    });
-
-    console.log(data);
-
-    const { authToken } = data;
-    if (authToken) {
+      like: 30,
+      followers: 20,
+    };
+    if (username === 'evalee8866' && password === 'evalee8866') {
       return { success: true, ...data };
+    } else {
+      return { success: false };
     }
-    return data;
   } catch (error) {
     console.error('["login failed"]', error);
   }
